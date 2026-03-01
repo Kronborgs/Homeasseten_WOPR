@@ -33,11 +33,15 @@ Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unrai
 Læg dine media-filer i mappen `docs/screenshots/` med præcis disse filnavne:
 
 - `WOPR.gif` (Home Assistant demo)
+- `01-dashboard-overview.png` (dashboard overview)
 - `ESP-D1-mini-USB-c.png` (controller reference)
 - `physical-rack-display.jpg` (foto af det rigtige display)
 
 ### Home Assistant demo (GIF)
 ![WOPR Home Assistant Demo](docs/screenshots/WOPR.gif)
+
+### Dashboard overview
+![Dashboard Overview](docs/screenshots/01-dashboard-overview.png)
 
 ### ESP D1 Mini controller
 ![ESP D1 Mini USB-C](docs/screenshots/ESP-D1-mini-USB-c.png)
