@@ -63,34 +63,23 @@ Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unrai
 - Denne repo er lavet som projekt-reference og kan kræve små navne-tilpasninger af sensorer i andre HA-miljøer.
 - Konfigurationen er bevidst beholdt tæt på den kørende version.
 
-## Screenshots
+## Demo & billeder
 
-Læg dine screenshots i mappen `docs/screenshots/` med præcis disse filnavne:
+Læg dine media-filer i mappen `docs/screenshots/` med præcis disse filnavne:
 
-- `01-dashboard-overview.png`
-- `02-wopr-live-matrix.png`
-- `03-wopr-controls.png`
-- `04-unraid-status-gauges.png`
-- `05-physical-rack-display.jpg`
+- `WOPR.gif` (Home Assistant demo)
+- `physical-rack-display.jpg` (foto af det rigtige display)
 
-Du kan bruge denne markdown direkte i README (allerede klar):
-
-```md
-### Dashboard overview
-![Dashboard Overview](docs/screenshots/01-dashboard-overview.png)
-
-### WOPR live matrix
-![WOPR Live Matrix](docs/screenshots/02-wopr-live-matrix.png)
-
-### WOPR controls
-![WOPR Controls](docs/screenshots/03-wopr-controls.png)
-
-### Unraid status gauges
-![Unraid Status Gauges](docs/screenshots/04-unraid-status-gauges.png)
+### Home Assistant demo (GIF)
+![WOPR Home Assistant Demo](docs/screenshots/WOPR.gif)
 
 ### Physical rack display
-![Physical Rack Display](docs/screenshots/05-physical-rack-display.jpg)
-```
+![Physical Rack Display](docs/screenshots/physical-rack-display.jpg)
+
+## Kredit
+
+- 3D print rack-mount STL design: MakerWorld model af original skaber
+  https://makerworld.com/en/models/1670433-rack-mounted-led-matrix-8x96-wopr-style?from=search#profileId-1768436
 
 ## Roadmap (idéer)
 
