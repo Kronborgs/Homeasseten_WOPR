@@ -28,6 +28,23 @@ Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unrai
   - Unraid server/array/parity/status visninger
   - Performance gauges (CPU, RAM, temperatur m.m.)
 
+## Demo & billeder
+
+Læg dine media-filer i mappen `docs/screenshots/` med præcis disse filnavne:
+
+- `WOPR.gif` (Home Assistant demo)
+- `ESP-D1-mini-USB-c.png` (controller reference)
+- `physical-rack-display.jpg` (foto af det rigtige display)
+
+### Home Assistant demo (GIF)
+![WOPR Home Assistant Demo](docs/screenshots/WOPR.gif)
+
+### ESP D1 Mini controller
+![ESP D1 Mini USB-C](docs/screenshots/ESP-D1-mini-USB-c.png)
+
+### Physical rack display
+![Physical Rack Display](docs/screenshots/physical-rack-display.jpg)
+
 ## Hardware
 
 - 1x ESP8266 D1 Mini
@@ -97,23 +114,6 @@ Se komplet forbindelsesdiagram her:
 
 - Denne repo er lavet som projekt-reference og kan kræve små navne-tilpasninger af sensorer i andre HA-miljøer.
 - Konfigurationen er bevidst beholdt tæt på den kørende version.
-
-## Demo & billeder
-
-Læg dine media-filer i mappen `docs/screenshots/` med præcis disse filnavne:
-
-- `WOPR.gif` (Home Assistant demo)
-- `ESP-D1-mini-USB-c.png` (controller reference)
-- `physical-rack-display.jpg` (foto af det rigtige display)
-
-### Home Assistant demo (GIF)
-![WOPR Home Assistant Demo](docs/screenshots/WOPR.gif)
-
-### ESP D1 Mini controller
-![ESP D1 Mini USB-C](docs/screenshots/ESP-D1-mini-USB-c.png)
-
-### Physical rack display
-![Physical Rack Display](docs/screenshots/physical-rack-display.jpg)
 
 ## Roadmap (idéer)
 
