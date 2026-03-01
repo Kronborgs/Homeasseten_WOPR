@@ -29,6 +29,31 @@ Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unrai
 - 12x MAX7219 moduler (kædet) = 96x8 matrix
 - Strømforsyning dimensioneret til matrix + ESP
 
+## Indkøbsliste (ud over filament)
+
+### Fra dine links
+
+- 3x MAX7219 8x32 (4-in-1) dot matrix moduler
+  https://www.amazon.de/dp/B07HJDV3HN?th=1
+- Skrue-/møtrik-sortiment (M3/M4/M5/M6)
+  https://www.amazon.de/dp/B0DQ16QCRW?th=1
+- ESP32 Mini USB-C dev boards (3-pack)
+  https://www.amazon.de/-/en/gp/product/B0D7V9591B?smid=AACU6YN8E2OJC&th=1
+
+### Derudover skal du typisk bruge
+
+- 5V strømforsyning med nok ampere til matrixen (gerne med lidt margin)
+- Ledninger/jumper wires (Dupont) til signaler
+- Strømkabler til 5V/GND distribution til alle paneler
+- Evt. DC barrel stik eller skrueterminaler til pæn strømtilslutning
+- Loddekolbe + tin (hvis paneler/forbindelser skal fastloddes)
+- Heatshrink/kabelstrips til kabelstyring i rack
+
+### Vigtigt om board-type
+
+- Denne repo er konfigureret til `ESP8266 D1 Mini` i ESPHome.
+- Hvis du bruger ESP32 boardet fra linket, skal board/platform i ESPHome opdateres tilsvarende.
+
 ## Filer i repo
 
 - `ESPhome_WOPR.yaml` – ESPHome-konfiguration til selve WOPR-displayet
