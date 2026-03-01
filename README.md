@@ -1,2 +1,103 @@
-# Homeasseten_WOPR
-Homeassetenm ESPhome W.O.P.R LED matrix projekt fuld integration til Unifi og Unriad
+# W.O.P.R Rack Display (ESPHome + Home Assistant)
+
+Et custom W.O.P.R-inspireret rack-display bygget med **ESP8266 (D1 Mini)**, **MAX7219 96x8 LED matrix**, **ESPHome** og **Home Assistant**.
+
+Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unraid Management Agent** i et DEFCON-inspireret dashboard.
+
+## Hvad projektet kan
+
+- Viser en dynamisk W.O.P.R matrix på fysisk LED-panel (96x8)
+- Matrixens aktivitet reagerer på:
+  - Antal online klienter (UniFi)
+  - WAN trafik/load (UniFi RX + TX)
+- Har introsekvens: **"MY NAME IS JOSHUA, SHALL WE PLAY A GAME?"**
+- Eksponerer live matrix-rækker til Home Assistant som tekst-sensorer
+- Giver styring direkte i Home Assistant:
+  - Brightness
+  - Effect Intensity
+  - Fill Override
+  - Replay Intro
+- Indeholder et komplet Home Assistant dashboard med:
+  - WOPR Live Matrix (emoji-renderet)
+  - WOPR Controls
+  - Unraid server/array/parity/status visninger
+  - Performance gauges (CPU, RAM, temperatur m.m.)
+
+## Hardware
+
+- 1x ESP8266 D1 Mini
+- 12x MAX7219 moduler (kædet) = 96x8 matrix
+- Strømforsyning dimensioneret til matrix + ESP
+
+## Filer i repo
+
+- `ESPhome_WOPR.yaml` – ESPHome-konfiguration til selve WOPR-displayet
+- `WOPR_Dashboard_HA.yaml` – Home Assistant Lovelace dashboard-konfiguration
+
+## Forudsætninger
+
+- Home Assistant
+- ESPHome integration i Home Assistant
+- UniFi integration i Home Assistant (til klient- og WAN-sensorer)
+- Unraid Management Agent integration (til server/data i dashboard)
+
+## Hurtig opsætning
+
+1. Kopiér `ESPhome_WOPR.yaml` ind i din ESPHome konfiguration.
+2. Sørg for at `secrets.yaml` indeholder:
+   - `wifi_ssid`
+   - `wifi_password`
+3. Tilpas entity IDs i `ESPhome_WOPR.yaml` hvis dine UniFi sensorer hedder noget andet.
+4. Flash til din D1 Mini via ESPHome.
+5. Importér/indsæt `WOPR_Dashboard_HA.yaml` i Home Assistant dashboard (Lovelace).
+6. Tilpas eventuelle entity IDs i dashboard-filen, så de matcher dit miljø.
+
+## Pinout (fra ESPHome config)
+
+- CLK: `D5`
+- MOSI: `D7`
+- CS: `D8`
+
+## Bemærkninger
+
+- Denne repo er lavet som projekt-reference og kan kræve små navne-tilpasninger af sensorer i andre HA-miljøer.
+- Konfigurationen er bevidst beholdt tæt på den kørende version.
+
+## Screenshots
+
+Læg dine screenshots i mappen `docs/screenshots/` med præcis disse filnavne:
+
+- `01-dashboard-overview.png`
+- `02-wopr-live-matrix.png`
+- `03-wopr-controls.png`
+- `04-unraid-status-gauges.png`
+- `05-physical-rack-display.jpg`
+
+Du kan bruge denne markdown direkte i README (allerede klar):
+
+```md
+### Dashboard overview
+![Dashboard Overview](docs/screenshots/01-dashboard-overview.png)
+
+### WOPR live matrix
+![WOPR Live Matrix](docs/screenshots/02-wopr-live-matrix.png)
+
+### WOPR controls
+![WOPR Controls](docs/screenshots/03-wopr-controls.png)
+
+### Unraid status gauges
+![Unraid Status Gauges](docs/screenshots/04-unraid-status-gauges.png)
+
+### Physical rack display
+![Physical Rack Display](docs/screenshots/05-physical-rack-display.jpg)
+```
+
+## Roadmap (idéer)
+
+- Flere visuelle modes (fx alarm/idle)
+- Automatisk fallback ved manglende UniFi data
+- Optional MQTT mirror af matrix-tilstand
+
+---
+
+Hvis du vil, kan jeg også lave en **engelsk README-version**, et **LICENSE-forslag** og en færdig **GitHub release-tekst**.

@@ -1,0 +1,385 @@
+views:
+  - title: Serveren
+    path: serveren
+    icon: mdi:server-security
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        column_span: 4
+        cards:
+          - type: map
+            entities:
+              - entity: zone.home
+            theme_mode: auto
+            default_zoom: 4
+          - clock_style: analog
+            clock_size: small
+            show_seconds: true
+            no_background: true
+            border: false
+            ticks: hour
+            face_style: markers
+            type: clock
+            seconds_motion: continuous
+            grid_options:
+              columns: 3
+              rows: 2
+          - type: markdown
+            title: NETWORK / POWER
+            content: >-
+              <pre style="font-family: 'Courier New', monospace; font-size:
+              13px; line-height: 1.4;">
+
+              SYSTEM CONTROL NODE ...... ONLINE
+
+              AUTHORIZATION LEVEL ...... MAXIMUM
+
+              REMOTE COMMAND BUS ....... ACTIVE
+
+              FAILSAFE STATUS .......... ENABLED
+
+              </pre>
+            grid_options:
+              columns: 9
+              rows: auto
+            text_only: true
+          - type: markdown
+            title: SYSTEM STATUS
+            content: >
+              <pre style="font-family: 'Courier New', monospace; font-size:
+              13px; line-height: 1.4;">
+
+              CPU TEMP ......... {{ states('sensor.homeserver_cpu_temperature')
+              }}
+
+              UPTIME ........... {{ states('sensor.homeserver_uptime') }}
+
+              UNRAID ........... {{ states('sensor.homeserver_unraid_version')
+              }}
+
+              UPDATES .......... {% if
+              is_state('binary_sensor.homeserver_update_available', 'on')
+              %}Available{% elif
+              is_state('binary_sensor.homeserver_update_available', 'off') %}Up
+              to date{% else %}Unknown{% endif %}
+
+              PLUGINS W/UPDATES  {{
+              states('sensor.homeserver_plugins_with_updates') }}
+
+              NOTIFICATIONS .... {{ states('sensor.homeserver_notifications') }}
+
+              </pre>
+            grid_options:
+              columns: 12
+              rows: auto
+            text_only: true
+          - type: markdown
+            title: DEFCON PANEL
+            content: >
+              <pre style="font-family: 'Courier New', monospace; font-size:
+              13px; line-height: 1.4;">
+
+              PRIMARY TARGET .... {{
+              states('binary_sensor.homeserver_parity_check_running') }}
+
+              THREAT LEVEL ...... NOMINAL
+
+              REACTOR STATE ..... STABLE
+
+              AI LOOP RUN STATUS  {{
+              states('sensor.homeserver_next_parity_check') }}
+
+              GLOBAL THERMO ..... TRACKING {{
+              states('binary_sensor.homeserver_mover_running') }}
+
+              AUTH CODE ......... WOPR-20{{
+              states('sensor.homeserver_cpu_usage') }}
+
+              </pre>
+            text_only: true
+            grid_options:
+              columns: 12
+              rows: auto
+          - type: markdown
+            title: STORAGE STATUS
+            content: >-
+              <pre style="font-family: 'Courier New', monospace; font-size:
+              13px; line-height: 1.4;">
+
+              ARRAY STARTED .... {{
+              states('binary_sensor.homeserver_array_started') }}
+
+              PARITY VALID ..... {% if
+              is_state('binary_sensor.homeserver_parity_valid', 'off') %}OK{%
+              elif is_state('binary_sensor.homeserver_parity_valid', 'on') %}Not
+              OK{% else %}Unknown{% endif %}
+
+              PARITY RUNNING ... {% if
+              is_state('binary_sensor.homeserver_parity_check_running', 'on')
+              %}Running{% elif
+              is_state('binary_sensor.homeserver_parity_check_running', 'off')
+              %}No{% else %}Unknown{% endif %}
+
+              LAST CHECK ....... {{
+              states('sensor.homeserver_last_parity_check') }}
+
+              DEDCON 5 STATUS .. {{ states('sensor.homeserver_uptime') }}
+
+              ZFS AVAILABLE .... {{
+              states('binary_sensor.homeserver_zfs_available') }}
+
+              </pre>
+            text_only: true
+            grid_options:
+              columns: 12
+              rows: auto
+          - type: vertical-stack
+            cards:
+              - type: markdown
+                title: WOPR Live Matrix
+                content: >
+                  <pre style="line-height: 1.0; font-size: 10px; margin: 0;
+                  background: #000; color: #ff3b30; padding: 10px;
+                  border-radius: 10px; white-space: pre; font-family: 'Courier
+                  New', monospace;">
+
+                  {{ states('sensor.w_o_p_r_wopr_row_0') | replace('█','🟥') |
+                  replace('·','⬛') }}
+
+                  {{ states('sensor.w_o_p_r_wopr_row_1') | replace('█','🟥') |
+                  replace('·','⬛') }}
+
+                  {{ states('sensor.w_o_p_r_wopr_row_2') | replace('█','🟥') |
+                  replace('·','⬛') }}
+
+                  {{ states('sensor.w_o_p_r_wopr_row_3') | replace('█','🟥') |
+                  replace('·','⬛') }}
+
+                  {{ states('sensor.w_o_p_r_wopr_row_4') | replace('█','🟥') |
+                  replace('·','⬛') }}
+
+                  {{ states('sensor.w_o_p_r_wopr_row_5') | replace('█','🟥') |
+                  replace('·','⬛') }}
+
+                  {{ states('sensor.w_o_p_r_wopr_row_6') | replace('█','🟥') |
+                  replace('·','⬛') }}
+
+                  {{ states('sensor.w_o_p_r_wopr_row_7') | replace('█','🟥') |
+                  replace('·','⬛') }} </pre>
+              - type: entities
+                title: WOPR Controls
+                entities:
+                  - entity: number.w_o_p_r_wopr_brightness
+                    name: Brightness
+                  - entity: number.w_o_p_r_wopr_effect_intensity
+                    name: Effect Intensity
+                  - entity: number.w_o_p_r_wopr_fill_override
+                    name: Fill Override
+                  - entity: button.w_o_p_r_wopr_replay_intro
+                    name: Replay Intro
+            grid_options:
+              columns: 48
+              rows: auto
+          - type: markdown
+            title: NETWORK / POWER
+            content: >
+              <pre style="font-family: 'Courier New', monospace; font-size:
+              13px; line-height: 1.4;">
+
+              BR0 RX ........... {{ states('sensor.homeserver_network_br0_rx')
+              }}
+
+              BR0 TX ........... {{ states('sensor.homeserver_network_br0_tx')
+              }}
+
+              UPS CONNECTED .... {{
+              states('binary_sensor.homeserver_ups_connected') }}
+
+              UPS BATTERY ...... {{ states('sensor.pinuts_battery_charge') }}
+
+              UPS LOAD % ........{{ states('sensor.pinuts_load') }}
+
+              UPS Voltage Out... {{states('sensor.pinuts_output_voltage') }}
+
+              Voltags from GRID. {{states('sensor.pinuts_input_voltage') }}
+
+              </pre>
+            grid_options:
+              columns: 12
+              rows: auto
+            text_only: true
+          - type: gauge
+            entity: sensor.homeserver_cpu_usage
+            name: CPU Load
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 50
+              red: 80
+            needle: true
+          - type: gauge
+            entity: sensor.homeserver_ram_usage
+            name: RAM Usage
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 60
+              red: 85
+            grid_options:
+              columns: 12
+              rows: auto
+            needle: true
+          - type: gauge
+            entity: sensor.homeserver_array_usage
+            name: Array Usage
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 80
+              red: 95
+            needle: true
+      - type: grid
+        column_span: 4
+        cards:
+          - type: gauge
+            entity: sensor.homeserver_cpu_temperature
+            name: CPU Temp
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              green: 0
+              yellow: 60
+              red: 80
+          - type: gauge
+            entity: sensor.homeserver_gpu_utilization
+            name: GPU Load
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 100
+              red: 100
+            needle: true
+          - type: gauge
+            entity: sensor.homeserver_gpu_temperature
+            name: GPU Temp
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              green: 0
+              yellow: 65
+              red: 82
+      - type: grid
+        cards:
+          - type: entities
+            title: Storage Usage
+            entities:
+              - entity: sensor.homeserver_disk_bibliotek_usage
+              - entity: sensor.homeserver_disk_cache_usage
+              - entity: sensor.homeserver_disk_disk1_usage
+              - entity: sensor.homeserver_disk_disk2_usage
+              - entity: sensor.homeserver_disk_disk3_usage
+              - entity: sensor.homeserver_disk_flash_usage
+              - entity: sensor.homeserver_flash_usage
+              - entity: sensor.homeserver_flash_free_space
+              - entity: sensor.homeserver_log_filesystem_usage
+              - entity: sensor.homeserver_zfs_pool_cache_usage
+              - entity: sensor.homeserver_zfs_arc_hit_ratio
+      - type: grid
+        cards:
+          - type: heading
+            heading: Nyt afsnit
+      - type: grid
+        cards:
+          - type: entities
+            title: Storage Health / Parity
+            entities:
+              - entity: binary_sensor.homeserver_array_started
+              - entity: sensor.homeserver_disk_bibliotek_health
+              - entity: sensor.homeserver_disk_cache_health
+              - entity: sensor.homeserver_disk_disk1_health
+              - entity: sensor.homeserver_disk_disk2_health
+              - entity: sensor.homeserver_disk_disk3_health
+              - entity: sensor.homeserver_disk_flash_health
+              - entity: sensor.homeserver_disk_parity_health
+              - entity: binary_sensor.homeserver_flash_healthy
+              - entity: binary_sensor.homeserver_parity_valid
+              - entity: sensor.homeserver_last_parity_check
+              - entity: sensor.homeserver_next_parity_check
+              - entity: sensor.homeserver_parity_check_progress
+              - entity: binary_sensor.homeserver_parity_check_running
+              - entity: binary_sensor.homeserver_parity_check_scheduled
+              - entity: binary_sensor.homeserver_mover_running
+              - entity: binary_sensor.homeserver_zfs_available
+              - entity: sensor.homeserver_zfs_pool_cache_health
+          - type: heading
+            heading: Nyt afsnit
+      - type: grid
+        cards:
+          - type: heading
+            heading: Nyt afsnit
+    header:
+      card:
+        type: markdown
+        content: '          🪖☢️🚨🛡️ DEFCON PANEL 🛡️🚨☢️🪖'
+    cards: []
+  - type: sections
+    max_columns: 4
+    title: Server-control
+    path: server-control
+    icon: mdi:server-outline
+    sections:
+      - type: grid
+        column_span: 4
+        cards:
+          - type: entities
+            title: Array / System Controls
+            entities:
+              - entity: button.homeserver_start_array
+              - entity: button.homeserver_stop_array
+              - entity: button.homeserver_start_parity_check
+              - entity: button.homeserver_stop_parity_check
+              - entity: button.homeserver_reboot_system
+              - entity: button.homeserver_shutdown_system
+          - type: entities
+            title: VM Controls
+            entities:
+              - entity: switch.homeserver_vm_windows_10
+              - entity: switch.homeserver_vm_windows_11_iot_lab
+          - type: entities
+            title: Docker Controls
+            entities:
+              - entity: switch.homeserver_container_bambuddy
+              - entity: switch.homeserver_container_changedetection
+              - entity: switch.homeserver_container_dokuwiki
+              - entity: switch.homeserver_container_element_web
+              - entity: switch.homeserver_container_embyserver
+              - entity: switch.homeserver_container_gotify
+              - entity: switch.homeserver_container_heimdall
+              - entity: switch.homeserver_container_kiwix_server
+              - entity: switch.homeserver_container_krusader
+              - entity: switch.homeserver_container_lubelogger
+              - entity: switch.homeserver_container_mariadbwordpress
+              - entity: switch.homeserver_container_matrix_synapse
+              - entity: switch.homeserver_container_netboot_orchestrator
+              - entity: switch.homeserver_container_nginxproxymanager
+              - entity: switch.homeserver_container_nodecast_tv
+              - entity: switch.homeserver_container_ollama
+              - entity: switch.homeserver_container_onlyoffice_community_server
+              - entity: switch.homeserver_container_onlyofficedocumentserver
+              - entity: switch.homeserver_container_open_webui
+              - entity: switch.homeserver_container_qbittorrent
+              - entity: switch.homeserver_container_satisfactory_server
+              - entity: switch.homeserver_container_unraid_cloudflared_tunnel
+              - entity: switch.homeserver_container_viniplay
+              - entity: switch.homeserver_container_wordpress
+      - type: grid
+        cards: []
+      - type: grid
+        cards: []

@@ -1,0 +1,298 @@
+esphome:
+  name: wopr
+  friendly_name: W.O.P.R
+
+esp8266:
+  board: d1_mini
+
+logger:
+
+api:
+  encryption:
+    key: "Made by your own ESP home in HA"
+
+ota:
+  - platform: esphome
+    password: "Made by your own ESP home in HA"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  min_auth_mode: WPA2
+  ap:
+    ssid: "Wopr Fallback Hotspot"
+    password: "ULgWIGBTI6EC"
+
+captive_portal:
+
+sensor:
+  - platform: homeassistant
+    id: unifi_online_devices
+    entity_id: sensor.unifi_active_clients
+    internal: true
+
+  - platform: homeassistant
+    id: unifi_wan_rx
+    entity_id: sensor.unifi_wan_rx
+    internal: true
+
+  - platform: homeassistant
+    id: unifi_wan_tx
+    entity_id: sensor.unifi_wan_tx
+    internal: true
+
+number:
+  - platform: template
+    name: "WOPR Brightness"
+    id: wopr_brightness
+    min_value: 0
+    max_value: 15
+    step: 1
+    mode: slider
+    optimistic: true
+    restore_value: true
+    initial_value: 4
+
+  - platform: template
+    name: "WOPR Effect Intensity"
+    id: wopr_effect_intensity
+    min_value: 1
+    max_value: 10
+    step: 1
+    mode: slider
+    optimistic: true
+    restore_value: true
+    initial_value: 5
+
+  - platform: template
+    name: "WOPR Fill Override"
+    id: wopr_fill_override
+    min_value: 5
+    max_value: 95
+    step: 1
+    mode: slider
+    optimistic: true
+    restore_value: true
+    initial_value: 40
+
+button:
+  - platform: template
+    name: "WOPR Replay Intro"
+    id: wopr_replay_intro
+    on_press:
+      - lambda: |-
+          id(boot_start_ms) = millis();
+          id(show_intro) = true;
+
+text_sensor:
+  - platform: template
+    id: wopr_row_0
+    name: "WOPR Row 0"
+    update_interval: never
+  - platform: template
+    id: wopr_row_1
+    name: "WOPR Row 1"
+    update_interval: never
+  - platform: template
+    id: wopr_row_2
+    name: "WOPR Row 2"
+    update_interval: never
+  - platform: template
+    id: wopr_row_3
+    name: "WOPR Row 3"
+    update_interval: never
+  - platform: template
+    id: wopr_row_4
+    name: "WOPR Row 4"
+    update_interval: never
+  - platform: template
+    id: wopr_row_5
+    name: "WOPR Row 5"
+    update_interval: never
+  - platform: template
+    id: wopr_row_6
+    name: "WOPR Row 6"
+    update_interval: never
+  - platform: template
+    id: wopr_row_7
+    name: "WOPR Row 7"
+    update_interval: never
+
+  - platform: template
+    id: wopr_intro_text
+    name: "WOPR Intro Text"
+    update_interval: never
+
+globals:
+  - id: panel_state
+    type: bool[96][8]
+    restore_value: no
+
+  - id: next_update_time
+    type: uint32_t
+    restore_value: no
+    initial_value: '0'
+
+  - id: wopr_initialized
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
+  - id: boot_start_ms
+    type: uint32_t
+    restore_value: no
+    initial_value: '0'
+
+  - id: show_intro
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
+spi:
+  clk_pin: D5
+  mosi_pin: D7
+
+display:
+  - platform: max7219digit
+    id: wopr_display
+    cs_pin: D8
+    num_chips: 12
+    intensity: 4
+    rotate_chip: 0
+    reverse_enable: false
+    scroll_enable: false
+    update_interval: 20ms
+    lambda: |-
+      const int WIDTH = 96;
+      const int HEIGHT = 8;
+      uint32_t now = millis();
+
+      it.intensity((int) id(wopr_brightness).state);
+
+      if (!id(wopr_initialized)) {
+        for (int y = 0; y < HEIGHT; y++) {
+          for (int x = 0; x < WIDTH; x++) {
+            id(panel_state)[x][y] = (random_uint32() % 100) < 20;
+          }
+        }
+        id(boot_start_ms) = now;
+        id(show_intro) = false;
+        id(wopr_initialized) = true;
+      }
+
+      if (id(show_intro)) {
+        const uint32_t intro_duration_ms = 9000;
+        const uint32_t step_ms = 120;
+
+        uint32_t elapsed = now - id(boot_start_ms);
+        if (elapsed < intro_duration_ms) {
+          std::string pad = "            ";
+          std::string msg = "MY NAME IS JOSHUA, SHALL WE PLAY A GAME?";
+          std::string full = pad + msg + pad;
+
+          size_t win = 12;
+          size_t max_index = full.length() - win;
+          size_t index = (elapsed / step_ms) % (max_index + 1);
+          std::string window = full.substr(index, win);
+
+          id(wopr_intro_text).publish_state(window);
+
+          it.fill(COLOR_OFF);
+          it.printdigitf("%s", window.c_str());
+          return;
+        } else {
+          id(show_intro) = false;
+          id(wopr_intro_text).publish_state("");
+        }
+      }
+
+      if (now >= id(next_update_time)) {
+        float clients = id(unifi_online_devices).has_state() ? id(unifi_online_devices).state : 0.0f;
+        float rx = id(unifi_wan_rx).has_state() ? id(unifi_wan_rx).state : 0.0f;
+        float tx = id(unifi_wan_tx).has_state() ? id(unifi_wan_tx).state : 0.0f;
+        float bandwidth = rx + tx;
+
+        float effect_intensity = id(wopr_effect_intensity).state;
+        float fill_override = id(wopr_fill_override).state;
+
+        uint32_t flip1_max = 5;
+        if (bandwidth > 10.0f) flip1_max = 4;
+        if (bandwidth > 30.0f) flip1_max = 3;
+        if (bandwidth > 70.0f) flip1_max = 2;
+
+        int intensity_push = (int) (effect_intensity - 5.0f);
+        int flip_adjusted = (int) flip1_max - (intensity_push / 2);
+        if (flip_adjusted < 2) flip_adjusted = 2;
+        if (flip_adjusted > 8) flip_adjusted = 8;
+        flip1_max = (uint32_t) flip_adjusted;
+
+        uint32_t fill_percentage = 15;
+        if (clients > 10.0f) fill_percentage = 30;
+        if (clients > 25.0f) fill_percentage = 50;
+        if (clients > 50.0f) fill_percentage = 70;
+        if (clients > 80.0f) fill_percentage = 85;
+        fill_percentage = (uint32_t) ((fill_percentage + (uint32_t) fill_override) / 2);
+
+        for (int y = 0; y < HEIGHT; y++) {
+          for (int x = 0; x < WIDTH; x++) {
+            if ((random_uint32() % flip1_max) == 0) {
+              id(panel_state)[x][y] = ((random_uint32() % 100) < fill_percentage);
+            }
+          }
+        }
+
+        uint32_t delays[3] = {250, 500, 750};
+        uint32_t delay_ms = delays[random_uint32() % 3];
+        if (bandwidth > 15.0f) delay_ms = (delay_ms * 3) / 4;
+        if (bandwidth > 40.0f) delay_ms = delay_ms / 2;
+        if (bandwidth > 80.0f) delay_ms = delay_ms / 3;
+
+        float speed_factor = 1.5f - (effect_intensity * 0.11f);
+        if (speed_factor < 0.35f) speed_factor = 0.35f;
+        delay_ms = (uint32_t)(delay_ms * speed_factor);
+
+        if (delay_ms < 40) delay_ms = 40;
+        id(next_update_time) = now + delay_ms;
+      }
+
+      it.fill(COLOR_OFF);
+      for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
+          if (id(panel_state)[x][y]) {
+            it.line(x, y, x, y, COLOR_ON);
+          }
+        }
+      }
+
+interval:
+  - interval: 1s
+    then:
+      - lambda: |-
+          if (id(show_intro)) {
+            std::string intro = id(wopr_intro_text).state;
+            id(wopr_row_0).publish_state(intro);
+            id(wopr_row_1).publish_state("");
+            id(wopr_row_2).publish_state("");
+            id(wopr_row_3).publish_state("");
+            id(wopr_row_4).publish_state("");
+            id(wopr_row_5).publish_state("");
+            id(wopr_row_6).publish_state("");
+            id(wopr_row_7).publish_state("");
+            return;
+          }
+
+          std::string rows[8];
+          for (int y = 0; y < 8; y++) {
+            rows[y].reserve(96);
+            for (int x = 0; x < 96; x++) {
+              rows[y] += id(panel_state)[x][y] ? "█" : "·";
+            }
+          }
+          id(wopr_row_0).publish_state(rows[0]);
+          id(wopr_row_1).publish_state(rows[1]);
+          id(wopr_row_2).publish_state(rows[2]);
+          id(wopr_row_3).publish_state(rows[3]);
+          id(wopr_row_4).publish_state(rows[4]);
+          id(wopr_row_5).publish_state(rows[5]);
+          id(wopr_row_6).publish_state(rows[6]);
+          id(wopr_row_7).publish_state(rows[7]);
