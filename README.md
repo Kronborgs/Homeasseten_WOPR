@@ -4,6 +4,11 @@ Et custom W.O.P.R-inspireret rack-display bygget med **ESP8266 (D1 Mini)**, **MA
 
 Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unraid Management Agent** i et DEFCON-inspireret dashboard.
 
+## Kredit
+
+- 3D print rack-mount STL design: MakerWorld model af original skaber
+  https://makerworld.com/en/models/1670433-rack-mounted-led-matrix-8x96-wopr-style?from=search#profileId-1768436
+
 ## Hvad projektet kan
 
 - Viser en dynamisk W.O.P.R matrix på fysisk LED-panel (96x8)
@@ -30,8 +35,6 @@ Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unrai
 - Strømforsyning dimensioneret til matrix + ESP
 
 ## Indkøbsliste (ud over filament)
-
-### Fra dine links
 
 - 3x MAX7219 8x32 (4-in-1) dot matrix moduler
   https://www.amazon.de/dp/B07HJDV3HN?th=1
@@ -111,11 +114,6 @@ Læg dine media-filer i mappen `docs/screenshots/` med præcis disse filnavne:
 
 ### Physical rack display
 ![Physical Rack Display](docs/screenshots/physical-rack-display.jpg)
-
-## Kredit
-
-- 3D print rack-mount STL design: MakerWorld model af original skaber
-  https://makerworld.com/en/models/1670433-rack-mounted-led-matrix-8x96-wopr-style?from=search#profileId-1768436
 
 ## Roadmap (idéer)
 
