@@ -33,6 +33,7 @@ Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unrai
 
 - `ESPhome_WOPR.yaml` – ESPHome-konfiguration til selve WOPR-displayet
 - `WOPR_Dashboard_HA.yaml` – Home Assistant Lovelace dashboard-konfiguration
+- `docs/WIRING_DIAGRAM.md` – forbindelsesdiagram for ESP D1 Mini + 3x MAX7219 8x32
 
 ## Forudsætninger
 
@@ -58,6 +59,12 @@ Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unrai
 - MOSI: `D7`
 - CS: `D8`
 
+## Wiring diagram
+
+Se komplet forbindelsesdiagram her:
+
+- [docs/WIRING_DIAGRAM.md](docs/WIRING_DIAGRAM.md)
+
 ## Bemærkninger
 
 - Denne repo er lavet som projekt-reference og kan kræve små navne-tilpasninger af sensorer i andre HA-miljøer.
@@ -68,10 +75,14 @@ Projektet kombinerer live netværksdata fra **UniFi** med statusdata fra **Unrai
 Læg dine media-filer i mappen `docs/screenshots/` med præcis disse filnavne:
 
 - `WOPR.gif` (Home Assistant demo)
+- `ESP-D1-mini-USB-c.png` (controller reference)
 - `physical-rack-display.jpg` (foto af det rigtige display)
 
 ### Home Assistant demo (GIF)
 ![WOPR Home Assistant Demo](docs/screenshots/WOPR.gif)
+
+### ESP D1 Mini controller
+![ESP D1 Mini USB-C](docs/screenshots/ESP-D1-mini-USB-c.png)
 
 ### Physical rack display
 ![Physical Rack Display](docs/screenshots/physical-rack-display.jpg)
