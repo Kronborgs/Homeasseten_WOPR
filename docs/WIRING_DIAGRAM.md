@@ -16,25 +16,30 @@ Denne guide viser koblingen mellem din `ESP-D1-mini-USB-c.png` controller og 3 s
 
 ```mermaid
 flowchart LR
-  PSU[5V strømforsyning] --> M1[ MAX7219 Panel 1<br/>8x32 (IN) ]
-  PSU --> M2[ MAX7219 Panel 2<br/>8x32 ]
-  PSU --> M3[ MAX7219 Panel 3<br/>8x32 (OUT) ]
+  PSU["5V strømforsyning"]
+  ESP["ESP8266 D1 Mini USB-C"]
+  M1["MAX7219 Panel 1 - 8x32 (IN)"]
+  M2["MAX7219 Panel 2 - 8x32"]
+  M3["MAX7219 Panel 3 - 8x32 (OUT)"]
+  GND(("Fælles GND"))
 
-  ESP[ESP8266 D1 Mini<br/>USB-C]
+  PSU --> M1
+  PSU --> M2
+  PSU --> M3
 
-  ESP -- D7 / MOSI --> M1
-  M1 -- DOUT --> M2
-  M2 -- DOUT --> M3
+  ESP -- "D7 / MOSI" --> M1
+  M1 -- "DOUT -> DIN" --> M2
+  M2 -- "DOUT -> DIN" --> M3
 
-  ESP -- D5 / CLK --> M1
-  ESP -- D5 / CLK --> M2
-  ESP -- D5 / CLK --> M3
+  ESP -- "D5 / CLK" --> M1
+  ESP -- "D5 / CLK" --> M2
+  ESP -- "D5 / CLK" --> M3
 
-  ESP -- D8 / CS(LOAD) --> M1
-  ESP -- D8 / CS(LOAD) --> M2
-  ESP -- D8 / CS(LOAD) --> M3
+  ESP -- "D8 / CS-LOAD" --> M1
+  ESP -- "D8 / CS-LOAD" --> M2
+  ESP -- "D8 / CS-LOAD" --> M3
 
-  ESP --- GND[(Fælles GND)]
+  ESP --- GND
   M1 --- GND
   M2 --- GND
   M3 --- GND
