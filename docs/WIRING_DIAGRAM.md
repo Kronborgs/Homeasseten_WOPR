@@ -1,8 +1,8 @@
 # W.O.P.R wiring diagram (ESP D1 Mini + 3x MAX7219 8x32)
 
-Denne guide viser koblingen mellem din `ESP-D1-mini-USB-c.png` controller og 3 stk. MAX7219 8x32 paneler.
+This guide shows the wiring between your `ESP-D1-mini-USB-c.png` controller and 3x MAX7219 8x32 panels.
 
-> Fra ESPHome config:
+> From the ESPHome config:
 >
 > - `CLK = D5`
 > - `MOSI = D7`
@@ -23,20 +23,20 @@ flowchart LR
   M1 -->|"DOUT -> DIN"| M2["MAX7219 #2"]
   M2 -->|"DOUT -> DIN"| M3["MAX7219 #3 (OUT)"]
 
-  ESP -->|"5V"| PWR["5V strøm"]
+  ESP -->|"5V"| PWR["5V power"]
   PWR --> M1
   PWR --> M2
   PWR --> M3
 
-  ESP --- GND(("Fælles GND"))
+  ESP --- GND(("Common GND"))
   M1 --- GND
   M2 --- GND
   M3 --- GND
 ```
 
-## Pin-til-pin (som på billed-wiring)
+## Pin-to-pin (like the wiring image)
 
-| ESP D1 Mini | MAX7219 (første modul / IN-side) |
+| ESP D1 Mini | MAX7219 (first module / IN side) |
 |---|---|
 | `5V` | `VCC` |
 | `G` (GND) | `GND` |
@@ -44,24 +44,24 @@ flowchart LR
 | `D5` | `CLK` |
 | `D8` | `CS` / `LOAD` |
 
-## Kæde for 3 moduler
+## Daisy chain for 3 modules
 
-1. ESP forbindes kun til **første** MAX7219 modul (IN-side).
-2. `DOUT` fra modul #1 går til `DIN` på modul #2.
-3. `DOUT` fra modul #2 går til `DIN` på modul #3.
-4. `CLK`, `CS`, `VCC` og `GND` skal være fælles på alle 3 moduler.
+1. Connect the ESP only to the **first** MAX7219 module (IN side).
+2. Connect `DOUT` from module #1 to `DIN` on module #2.
+3. Connect `DOUT` from module #2 to `DIN` on module #3.
+4. `CLK`, `CS`, `VCC`, and `GND` must be shared across all 3 modules.
 
-## Koblingsliste
+## Connection list
 
-- `ESP D5 (GPIO14)` -> `CLK` på alle 3 moduler
-- `ESP D7 (GPIO13)` -> `DIN` på modul #1
-- `Modul #1 DOUT` -> `DIN` på modul #2
-- `Modul #2 DOUT` -> `DIN` på modul #3
-- `ESP D8 (GPIO15)` -> `CS/LOAD` på alle 3 moduler
-- `5V` -> `VCC` på alle moduler
-- `GND` (ESP + alle moduler + PSU) skal være fælles
+- `ESP D5 (GPIO14)` -> `CLK` on all 3 modules
+- `ESP D7 (GPIO13)` -> `DIN` on module #1
+- `Module #1 DOUT` -> `DIN` on module #2
+- `Module #2 DOUT` -> `DIN` on module #3
+- `ESP D8 (GPIO15)` -> `CS/LOAD` on all 3 modules
+- `5V` -> `VCC` on all modules
+- `GND` (ESP + all modules + PSU) must be common
 
-## Vigtigt
+## Important
 
-- Start altid datakæden i den ende af første panel, der er mærket `DIN`/`IN`.
-- Nogle MAX7219 boards kører fint med 3.3V logik fra ESP8266, men ved ustabil drift kan en 74HCT-level shifter forbedre signalet.
+- Always start the data chain from the side of the first panel marked `DIN`/`IN`.
+- Many MAX7219 boards work with ESP8266 3.3V logic, but if you see unstable behavior, a 74HCT level shifter can improve signal reliability.

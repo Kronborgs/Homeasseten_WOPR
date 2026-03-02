@@ -1,11 +1,11 @@
 # Screenshot upload guide
 
-Læg dine filer i denne mappe med præcis disse filnavne:
+Place your files in this folder using these exact filenames:
 
 1. `WOPR.gif` (Home Assistant demo)
-2. `physical-rack-display.jpg` (foto af fysisk W.O.P.R display)
+2. `physical-rack-display.jpg` (photo of the physical W.O.P.R display)
 
 Tips:
-- Brug GIF til dashboard-demoen.
-- Brug JPG til foto af hardware.
-- Hold billedbredden høj nok til at tekst i dashboard kan læses.
+- Use GIF for the dashboard demo.
+- Use JPG for hardware photos.
+- Keep image width high enough for dashboard text to stay readable.
